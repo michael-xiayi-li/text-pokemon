@@ -1,0 +1,305 @@
+###################Pokemon Python####################################
+#by Michael Li and Praruj Pant
+
+
+
+
+
+import sys
+import random
+
+#attack list:
+
+body_slam={"name":"body_slam","type":["normal"],"damage":85}
+brick_break={"name":"brick_break","type":["fighting"],"damage":70}
+confusion={"name":"confusion","type":["psychic"],"damage":50}
+dragon_rage={"name":"dragon_rage","type":["dragon"],"damage":40}
+earthquake={"name":"earthquake","type":["ground"],"damage":100}
+falconpunch={"name":"falconpunch","type":["normal"],"damage":999999999999}
+giga_drain={"name":"giga_drain","type":["grass"],"damage":75}
+hydro_pump={"name":"hydro_pump","type":["water"],"damage":110}
+hyper_beam={"name":"hyper_beam","type":["normal"],"damage":150}
+ice_fang={"name":"ice_fang","type":["ice"],"damage":65}
+ice_punch={"name":"ice_punch","type":["ice"],"damage":75}
+ironhead={"name":"ironhead","type":["steel"],"damage":80}
+lick={"name":"lick","type":["normal"],"damage":30}
+psybeam={"name":"psybeam","type":["psychic"],"damage":50}
+psychic={"name":"psychic","type":["psychic"],"damage":90}
+psycho_cut={"name":"psycho_cut","type":["psychic"],"damage":70}
+quick_attack={"name":"quick_attack","type":["normal"],"damage":40}
+razor_leaf={"name":"razor_leaf","type":["grass"],"damage":55}
+rock_slide={"name":"rock_slide","type":["rock"],"damage":75}
+rollout={"name":"rollout","type":["rock"],"damage":30}
+slam={"name":"slam","type":["normal"],"damage":80}
+solar_beam={"name":"solar_beam","type":["grass"],"damage":120}
+tackle={"name":"tackle","type":["normal"],"damage":50}
+thundershock={"name":"thundershock","type":["electric"],"damage":40}
+thunderbolt={"name":"thunderbolt","type":["electric"],"damage":95}
+dragon_pulse={"name":"dragon_pulse","type":["dragon"],"damage":90}
+x_scissor={"name":"x_scissor","type":["bug"],"damage":80}
+ice_beam={"name":"ice_beam","type":["ice"],"damage":90}
+smog = {"name":"smog", "type":["poison"], "damage":60}
+
+
+
+
+
+
+
+#list of pokemon available:
+
+
+alakazam= {"name":"alakazam","type":["psychic"],"HP":55,"Attack":50,"Defense":45,"attack list":["confusion","psybeam","psycho_cut","psychic"],"attack dictionary":[confusion,psybeam,psycho_cut,psychic],"speed":120}
+dragonair={"name":"dragonair","type":["dragon"],"HP": 61, "Attack":84, "Defense": 65,"attack list":["thunderbolt", "hyper_beam", "dragon_pulse", "giga_drain"], "attack dictionary":[thunderbolt, hyper_beam, dragon_pulse, giga_drain],"speed": 70}
+gyrados={"name":"gyrados","type":["water","flying"],"HP":95,"Attack":124,"Defense":79,"attack list":["dragon_rage","ice_fang","hyper_beam","hydro_pump"],"attack dictionary":[hydro_pump,dragon_rage,ice_fang,hyper_beam],"speed":81} 
+lucario={"name":"lucario","type":["steel","fighting"],"HP":70,"Attack":110,"Defense":70,"attack list":["brick_break","ironhead","ice_punch","rock_slide"],"attack dictionary":[brick_break,ironhead,ice_punch,rock_slide,falconpunch],"speed":90}
+pikachu={"name":"pikachu","type":["electric"],"HP":35,"Attack":55,"Defense":90,"attack list":["slam","thundershock","thunderbolt","quick_attack"],"attack dictionary":[slam, thundershock,thunderbolt,quick_attack],"speed":90}
+torterra={"name":"torterra","type":["grass","ground"],"HP":95,"Attack":109,"Defense":105,"attack list":["razor_leaf","solar_beam","giga_drain","earthquake"],"attack dictionary":[razor_leaf,solar_beam,giga_drain,earthquake],"speed":56}
+snorlax= {"name":"snorlax","type":["normal"],"HP":160,"Attack":110,"Defense":65,"attack list":["tackle","lick","body_slam","rollout"],"attack dictionary":[tackle,lick,body_slam,rollout],"speed":30}
+heracross={"name":"heracross","type":["bug","fighting"],"HP":80,"Attack":185,"Defense":115,"attack list":["brick_break","tackle","earthquake","x_scissor"],"attack dictionary":[brick_break,tackle,earthquake,x_scissor],"speed":75}
+vanilluxe={"name":"vanilluxe","type":["ice"],"HP":71,"Attack":95,"Defense":85,"attack list":["thunderbolt","hyper_beam","ice_beam","rock_slide"],"attack dictionary":[thunderbolt,hyper_beam,ice_beam,rock_slide],"speed":79}
+weezing={"name":"weezing","type":["poison"],"HP":65,"Attack":90,"Defense":120,"attack list":["smog","tackle","slam","lick"],"attack dictionary":[smog,tackle,slam,lick],"speed":60}
+
+
+
+
+#shows what types are super effective (i.e. do 2x base damage) against what other types
+#a type may be super effective against itself (e.g. dragon)
+
+
+strengths={"normal":[],"fire":["grass","ice","bug","steel"],"water":["fire","ground","rock"],"electric":["water","flying"],"grass":["water","ground","rock"],"ice":["grass","ground","flying","dragon"],"fighting":["normal","ice","rock","steel"],"ground":["fire","electric","rock","steel","poison"],"flying":["grass","fighting","bug"],"psychic":["fighting","poison"],"bug":["grass","psychic","dark","poison"],"rock":["fire","ice","flying","bug"],"dragon":["dragon"],"steel":["ice","rock"],"poison":["grass"]}
+
+#shows what types are not very effective (i.e. do 0.5x base damage) against what other types
+#a type may not be very effective against itself (e.g. fire)
+resistances={"normal":["rock","steel"],"fire":["fire","rock","water","dragon"],"water":["water","grass","dragon"],"electric":["electric","grass","dragon"],"grass":["fire","grass","flying","bug","dragon","steel","poison"],"ice":["fire","water","ice","steel"],"fighting":["flying","psychic","bug","poison"],"ground":["ice","bug"],"flying":["electric","rock","steel"],"psychic":["psychic","steel"],"bug":["fire","fighting","flying","ghost","steel","poison"],"rock":["fighting","ground","steel"],"dragon":["steel"],"steel":["fire","water","electric","steel"],"poison":["poison","ground","rock"]}
+
+#shows what types do no damage against what other types
+immune={"normal":["ghost"],"electric":["ground"],"fighting":["ghost"],"poison":["steel"],"ground":["flying"],"psychic":["dark"]}
+
+
+
+
+
+#####################################  MODIFIERS  ########################################
+
+#defines what types are super effective against what other types based on the strengths dictionary
+
+def effective(type,defender):
+    modifier=1
+    for effect in type:
+        for sub in strengths[effect]:         
+           if sub in defender["type"]:
+               modifier*=2
+    return modifier
+
+#defines chance of a critical hit: the property of an attack to do 2x base damage 10% of the time
+
+def critical():
+    chance=random.random()
+    if chance<=.1:
+        print("It's a critical hit!")
+        return 2
+    return 1
+
+#defines what types are not very effective against what other types based on the resistances dictionary
+
+def resistance(type,defender):
+    modifier=1
+    for effect in type:  
+        for sub in resistances[effect]:
+            if sub in defender["type"]:
+                modifier*=1/2
+    return modifier
+
+
+
+#defines what type are immune against what other types based on the immune dictionary
+
+
+def immunity(type,defender):
+    modifier=1
+    for effect in type:
+        if effect not in immune:
+            return modifier
+        for sub in immune[effect]:
+            if sub in defender["type"]:
+                modifier*=0
+    return modifier
+
+
+#defines any attack bonus due to the pokemone type being the same as the attack type
+
+def effectstack(attacker,type):
+    for attacktype in type:
+        if attacktype in attacker["type"]:
+            return 1.5
+    return 1
+
+########################################################################################
+
+
+#Attack Calculation function
+#Takes into account attack, defense, type bonuses, and critical hits
+
+
+def attacktotal(attacker,defender,attacknum):
+    x=attacker["Attack"]/defender["Defense"]
+    attack=attacker["attack list"][attacknum]
+    attackbase=0
+    attacktype=""
+    for check in attacker["attack dictionary"]:
+        if check["name"]==attack:
+            attackbase=check["damage"]
+            attacktype=check["type"]
+    attacktest=attackbase*effective(attacktype,defender)*resistance(attacktype,defender)*immunity(attacktype,defender)
+    if attacktest>attackbase:
+        print("It's super effective")
+    if attacktest<attackbase and attacktest>0:
+        print("It's not very effective")
+    if attacktest==0:
+        print("It has no effect")
+    attacktotal=(attackbase*effective(attacktype,defender)*resistance(attacktype,defender)*effectstack(attacker,attacktype))*x*critical()*immunity(attacktype,defender)
+    if attacktotal<0:
+        attacktotal=0
+    return attacktotal  
+
+
+######################################    Gameplay      ##############################
+
+
+
+#Battle Function:
+#Allows players to select moves and calculates move hits
+
+
+def battle(attacker,defender,hp1,hp2):
+    hpattacker=hp1
+    hpdefender=hp2
+    alist=attacker["attack list"]
+    print("Select a move:")
+    print(attacker["attack list"])
+    attackmove=str(input("Move selected: "))
+    if attackmove not in alist:
+        print("error:select an actual move")
+        return battle(attacker,defender,hp1,hp2)
+    print(attacker["name"]+" uses "+attackmove)
+    attacknum=alist.index(attackmove)
+    hpdefender= hpdefender-attacktotal(attacker,defender,attacknum)
+    if hpdefender<=0:
+        print(defender["name"]+" has fainted!")
+        return hpdefender
+    return hpdefender
+
+
+
+
+#Full Battle Function:
+#Allows players to take turns battling each other
+
+
+
+def fullbattle(pokemon1,pokemon2,hp1,hp2,a,b):
+    a=str(a)
+    b=str(b)
+    while hp1>0 and hp2>0:
+        hp2=(battle(pokemon1,pokemon2,hp1,hp2))
+        print(pokemon2["name"]+"'s HP: " + str(hp2))
+        if hp2<=0:
+            print("player " +a+" wins the match!")
+            replay()
+            return None
+        hp1=(battle(pokemon2,pokemon1,hp2,hp1))    
+        print(pokemon1["name"]+"'s HP: "+str(hp1))
+    if hp1<=0:
+        print("player "+b+" wins the match!")
+        replay()
+        return None
+    if hp2<=0:
+        print("player "+a+" wins the match!")
+        replay()
+        return None
+    fullbattle(pokemon1,pokemon2,hp1,hp2,a,b)
+    
+
+
+#Speed Function:
+#Dictates which pokemon goes first at start of battle, depending on speed of pokemon
+
+
+        
+def speed(pokemon1,pokemon2,a,b):
+    if pokemon1["speed"]>pokemon2["speed"]:
+        print("Player "+str(a)+" goes first")
+        fullbattle(pokemon1,pokemon2,pokemon1["HP"],pokemon2["HP"],a,b)
+        return
+    if pokemon1["speed"]==pokemon2["speed"]:
+        chance=random.random()
+        if chance<=.5:
+            print("Player "+str(a)+" goes first")
+            fullbattle(pokemon1,pokemon2,pokemon1["HP"],pokemon2["HP"],a,b)
+            return
+        else:
+            print("Player "+str(b)+" goes first")
+            fullbattle(pokemon2,pokemon1,pokemon2["HP"],pokemon1["HP"],b,a)
+            return
+    if pokemon1["speed"]<pokemon2["speed"]:
+        print("Player "+str(b)+" goes first")
+        fullbattle(pokemon2,pokemon1,pokemon2["HP"],pokemon1["HP"],b,a)
+        return
+
+
+#Gamestart function:
+#Allows Players to which pokemon they want to use to battle
+
+
+def gamestart():
+    print("                                                                                          "*50)
+    pokemonlist=[pikachu,gyrados,torterra,snorlax,alakazam,lucario,dragonair,heracross,vanilluxe,weezing]
+    pokemon1=""
+    pokemon2=""
+    print("Welcome to Pokemon Python")
+    print(["pikachu","gyrados","torterra","snorlax","alakazam","lucario","dragonair","heracross","vanilluxe","weezing"])
+    onespokemonname=input("Player 1, please choose a pokemon: ")
+    for poketest in pokemonlist:
+        if poketest["name"]==onespokemonname:
+            pokemon1=poketest
+    if type(pokemon1)==str:
+        print("error:choose a real pokemon")
+        x=input()
+        gamestart()
+        return
+    print(["pikachu","gyrados","torterra","snorlax","alakazam","lucario","dragonair","heracross","vanilluxe","weezing"])
+    twospokemonname=input("Player 2, please choose a pokemon: ")
+    for poketest in pokemonlist:
+        if poketest["name"]==twospokemonname:
+            pokemon2=poketest
+    if type(pokemon2)==str:
+        print("error:choose a real pokemon")
+        x=input()
+        gamestart()
+        return
+    speed(pokemon1,pokemon2,1,2)
+
+
+
+
+#Replay Function:
+#Allows players to play again
+
+
+def replay():
+    print("Play Again?")
+    answer=str(input("Yes or No: "))
+    if answer in ["Yes","Y","yes","y"]:
+        gamestart()
+        return
+    elif answer in ["No","N","no","n"]:
+        return
+    else:
+        print("answer undetected,canceling game")
+        return
+
+
+
+
+gamestart()
